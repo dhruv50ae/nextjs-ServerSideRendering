@@ -3,6 +3,10 @@ import path from "path";
 
 const ProductDetailPage = ({ loadedProduct }) => {
   const { title, description } = loadedProduct;
+
+  if (!loadedProduct) {
+    return <p>Loading...</p>;
+  }
   return (
     <>
       <h1>{title}</h1>
@@ -45,7 +49,8 @@ export async function getStaticPaths() {
         },
       },
     ],
-    fallback: false,
+    fallback: true,
+    // fallback: "blocking",
   };
 }
 
