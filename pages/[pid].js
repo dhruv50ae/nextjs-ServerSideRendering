@@ -4,9 +4,9 @@ import path from "path";
 const ProductDetailPage = ({ loadedProduct }) => {
   const { title, description } = loadedProduct;
 
-  // if (!loadedProduct) {
-  //   return <p>Loading...</p>;
-  // }
+  if (!loadedProduct) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -25,13 +25,13 @@ async function getData() {
 
 export async function getStaticProps({ params }) {
   const productId = params.pid;
-
   const data = await getData();
-
   const product = data.products.find((product) => {
     return product.id === productId;
   });
-
+  if (!product) {
+    return { notFound: true };
+  }
   return {
     props: { loadedProduct: product },
   };
@@ -47,7 +47,7 @@ export async function getStaticPaths() {
   });
   return {
     paths: pathWithParams,
-    fallback: false,
+    fallback: true,
   };
 }
 
